@@ -5,7 +5,8 @@ const complaintSchema = new mongoose.Schema({
     category: { type: String, required: true },
     description: { type: String, required: true },
     image_url: { type: String },
-    status: { type: String, enum: ['Pending', 'In-Progress', 'Resolved'], default: 'Pending' }
+    status: { type: String, enum: ['Pending', 'In-Progress', 'Resolved'], default: 'Pending' },
+    admin_remark: { type: String, default: "" }
 }, {
     timestamps: true,
     versionKey: false

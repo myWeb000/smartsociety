@@ -42,6 +42,18 @@ exports.lodgeComplaint = async (req, res) => {
     }
 };
 
+exports.getComplaints = async (req, res) => {
+    try {
+        const { resident_id } = req.query; // Should come from req.user ideally
+        
+        const complaints = await Complaint.find({ resident_id }).sort({ createdAt: -1 });
+        res.status(200).json({ message: "Complaints fetched successfully", success: true, data: complaints });
+    } catch (error) {
+        console.error("Get Complaints Error:", error);
+        res.status(500).json({ message: "Internal Server Error", success: false });
+    }
+};
+
 exports.bookAmenity = async (req, res) => {
     try {
         const { resident_id, amenity_name, booking_date } = req.body;

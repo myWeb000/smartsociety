@@ -9,7 +9,7 @@ const guardRoutes = require('./Routes/guardRoutes.js');
 const userRoutes = require('./Routes/userRoutes.js');
 
 const app = express();
-
+connectDB()
 app.use(cors());
 app.use(express.json());
 
@@ -20,8 +20,9 @@ app.use('/api/resident', residentRoutes);
 app.use('/api/guard', guardRoutes);
 app.use('/api', userRoutes);
 
-connectDB().then(() => {
-    app.listen(3000, () => {
-        console.log('Server is running on port 3000');
-    });
-});
+// connectDB().then(() => {
+//     app.listen(3000, () => {
+//         console.log('Server is running on port 3000');
+//     });
+// });
+module.exports = app;

@@ -3,9 +3,9 @@ const adminController = require('../Controllers/adminController');
 const { verifyToken, authorizeRole } = require('../Middleware/authMIddleware');
 const router = express.Router();
 
-// Uncomment the following lines when frontend provides token:
-// router.use(verifyToken);
-// router.use(authorizeRole('Admin'));
+// Un-commented to enable protected routes
+router.use(verifyToken);
+router.use(authorizeRole('Admin'));
 
 router.get('/flats', adminController.getAllFlats);
 router.post('/flats', adminController.createFlat);

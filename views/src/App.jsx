@@ -1,8 +1,9 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-// Layout
+// Layout & Components
 import Layout from './components/Layout';
+import ProtectedRoute from './components/ProtectedRoute';
 
 // Auth & Common
 import Home from './pages/Home';
@@ -41,26 +42,34 @@ function App() {
       {/* Main Authenticated Layout Routes */}
       <Route element={<Layout />}>
         {/* Admin Routes */}
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/flats" element={<ManageFlats />} />
-        <Route path="/admin/bills" element={<GenerateBills />} />
-        <Route path="/admin/complaints" element={<ComplaintsManagement />} />
+        <Route element={<ProtectedRoute allowedRoles={['Admin']} />}>
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/flats" element={<ManageFlats />} />
+          <Route path="/admin/bills" element={<GenerateBills />} />
+          <Route path="/admin/complaints" element={<ComplaintsManagement />} />
+        </Route>
 
         {/* Resident Routes */}
-        <Route path="/resident/dashboard" element={<ResidentDashboard />} />
-        <Route path="/resident/bills" element={<MyBills />} />
-        <Route path="/resident/complaint" element={<LodgeComplaint />} />
-        <Route path="/resident/amenity" element={<AmenityBooking />} />
-        <Route path="/resident/visitor-pass" element={<GenerateVisitorPass />} />
+        <Route element={<ProtectedRoute allowedRoles={['Resident']} />}>
+          <Route path="/resident/dashboard" element={<ResidentDashboard />} />
+          <Route path="/resident/bills" element={<MyBills />} />
+          <Route path="/resident/complaint" element={<LodgeComplaint />} />
+          <Route path="/resident/amenity" element={<AmenityBooking />} />
+          <Route path="/resident/visitor-pass" element={<GenerateVisitorPass />} />
+        </Route>
 
         {/* Guard Routes */}
-        <Route path="/guard/dashboard" element={<ActiveVisitors />} />
-        <Route path="/guard/active-visitors" element={<ActiveVisitors />} />
-        <Route path="/guard/verify-pass" element={<VerifyPass />} />
-        <Route path="/guard/walk-in" element={<WalkInVisitor />} />
+        <Route element={<ProtectedRoute allowedRoles={['Guard']} />}>
+          <Route path="/guard/dashboard" element={<ActiveVisitors />} />
+          <Route path="/guard/active-visitors" element={<ActiveVisitors />} />
+          <Route path="/guard/verify-pass" element={<VerifyPass />} />
+          <Route path="/guard/walk-in" element={<WalkInVisitor />} />
+        </Route>
 
         {/* Profile */}
-        <Route path="/profile" element={<Profile />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/profile" element={<Profile />} />
+        </Route>
       </Route>
 
       {/* 404 Wildcard Route */}

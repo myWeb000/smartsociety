@@ -3,9 +3,9 @@ const guardController = require('../Controllers/guardController');
 const { verifyToken, authorizeRole } = require('../Middleware/authMIddleware');
 const router = express.Router();
 
-// Uncomment the following lines when frontend provides token:
-// router.use(verifyToken);
-// router.use(authorizeRole('Guard'));
+// Un-commented to enable protected routes
+router.use(verifyToken);
+router.use(authorizeRole('Guard'));
 
 router.post('/verify-pass', guardController.verifyPass);
 router.post('/walk-in', guardController.walkInEntry);

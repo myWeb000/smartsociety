@@ -68,10 +68,10 @@ exports.generateBill = async (req, res) => {
 exports.updateComplaintStatus = async (req, res) => {
     try {
         const { id } = req.params; // Complaint ID
-        const { status } = req.body;
+        const { status, admin_remark } = req.body;
 
         const validStatuses = ['Pending', 'In-Progress', 'Resolved'];
-        if (!validStatuses.includes(status)) {
+        if (status && !validStatuses.includes(status)) {
             return res.status(400).json({ message: "Invalid status", success: false });
         }
 
@@ -80,10 +80,12 @@ exports.updateComplaintStatus = async (req, res) => {
             return res.status(404).json({ message: "Complaint not found", success: false });
         }
 
-        complaint.status = status;
+        if (status) complaint.status = status;
+        if (admin_remark !== undefined) complaint.admin_remark = admin_remark;
+        
         await complaint.save();
 
-        res.status(200).json({ message: "Complaint status updated", success: true, data: complaint });
+        res.status(200).json({ message: "Complaint updated successfully", success: true, data: complaint });
     } catch (error) {
         console.error("Update Complaint Error:", error);
         res.status(500).json({ message: "Internal Server Error", success: false });
@@ -123,7 +125,13 @@ exports.getAllFlats = async (req, res) => {
 
 exports.getAllComplaints = async (req, res) => {
     try {
-        const complaints = await Complaint.find().populate('resident_id', 'name flat_id').sort({ createdAt: -1 });
+        const complaints = await Complaint.find()
+            .populate({
+                path: 'resident_id',
+                select: 'name email phone flat_id',
+                populate: { path: 'flat_id', select: 'block_name flat_number' }
+            })
+            .sort({ createdAt: -1 });
         res.status(200).json({ message: "Complaints fetched successfully", success: true, data: complaints });
     } catch (error) {
         console.error("Get Complaints Error:", error);
