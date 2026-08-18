@@ -1,0 +1,22 @@
+const express = require('express');
+const adminController = require('../Controllers/adminController');
+const { verifyToken, authorizeRole } = require('../Middleware/authMIddleware');
+const router = express.Router();
+
+// Uncomment the following lines when frontend provides token:
+// router.use(verifyToken);
+// router.use(authorizeRole('Admin'));
+
+router.get('/flats', adminController.getAllFlats);
+router.post('/flats', adminController.createFlat);
+router.put('/flats/:id/assign', adminController.assignResident);
+
+router.post('/bills', adminController.generateBill);
+router.get('/bills', adminController.getAllBills);
+
+router.get('/complaints', adminController.getAllComplaints);
+router.put('/complaints/:id', adminController.updateComplaintStatus);
+
+router.get('/dashboard', adminController.getDashboardStats);
+
+module.exports = router;
