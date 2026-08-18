@@ -3,11 +3,13 @@ const adminController = require('../Controllers/adminController');
 const { verifyToken, authorizeRole } = require('../Middleware/authMIddleware');
 const router = express.Router();
 
-// Un-commented to enable protected routes
+// Unprotected route for testing
+router.get('/flats', adminController.getAllFlats);
+
+// Enable protected routes for the rest
 router.use(verifyToken);
 router.use(authorizeRole('Admin'));
 
-router.get('/flats', adminController.getAllFlats);
 router.post('/flats', adminController.createFlat);
 router.put('/flats/:id/assign', adminController.assignResident);
 

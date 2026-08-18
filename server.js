@@ -13,6 +13,11 @@ connectDB()
 app.use(cors());
 app.use(express.json());
 
+// Default route to check if API is live
+app.get('/', (req, res) => {
+    res.status(200).json({ message: "Smart Society API is Live!", success: true });
+});
+
 // Mount the routes
 app.use('/', authRoutes); // Auth routes already have /api/auth inside them
 app.use('/api/admin', adminRoutes);
